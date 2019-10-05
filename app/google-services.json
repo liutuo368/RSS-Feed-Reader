@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "185844896614",
+    "firebase_url": "https://rssreader-45217.firebaseio.com",
+    "project_id": "rssreader-45217",
+    "storage_bucket": "rssreader-45217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185844896614:android:fd8bd2cd2bb1a16fdceea7",
+        "android_client_info": {
+          "package_name": "com.example.rssreader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185844896614-iv36j7ai3tsg5lv5dp5scrm51gdohb14.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rssreader",
+            "certificate_hash": "aa2d6ed2517427b4c8e3a1d5e1b79da0f8cd848d"
+          }
+        },
+        {
+          "client_id": "185844896614-c0deqvn56pibr6fsabb058mu8n27d40a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8qT8J-8SbITw5QegaMWo7pdOfpVroDSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185844896614-c0deqvn56pibr6fsabb058mu8n27d40a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
