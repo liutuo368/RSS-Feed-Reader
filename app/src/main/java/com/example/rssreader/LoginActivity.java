@@ -50,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
             {
                 if (Password.equals(RetrievedPassword)) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setAction("user");
+                    intent.putExtra("username", username);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
@@ -58,8 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     public void signinOnClick(View v)
