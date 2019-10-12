@@ -54,14 +54,15 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference usernameNode = userdata.child("username");
     DatabaseReference passwordNode = userdata.child("password");
 
-    public void validateUser(String username, String password)
+    public void validateUser(String username, final String password)
     {
         userdata.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null)
+                if (dataSnapshot.getValue() != null)
                 {
-                    setValidUser();
+                    if (dataSnapshot.child("password").getValue().equals(password))
+                        setValidUser();
                 }
             }
 
