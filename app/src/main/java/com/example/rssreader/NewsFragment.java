@@ -48,9 +48,9 @@ public class NewsFragment extends Fragment {
     private List <Map<String, Object>> list;
     private NewsListAdapter adapter;
 
-    public ArrayList<String> titles = new ArrayList<>();
-    public ArrayList<String> links = new ArrayList<>();
-    public ArrayList<String> sources = new ArrayList<>();
+    public List<String> titles = new ArrayList<>();
+    public List<String> links = new ArrayList<>();
+    public List<String> sources = new ArrayList<>();
 
     @Nullable
     @Override
@@ -75,7 +75,19 @@ public class NewsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-
+        getSources(new FirebaseCallback() {
+            @Override
+            public void onCallback(List<String> source) {
+                sources = source;
+                if (sources.size() > 0)
+                {
+                    for (int i=0; i < sources.size();i++)
+                    {
+                        new ProcessInBackGround().execute(sources.get(i));
+                    }
+                }
+            }
+        });
 
     }
 
@@ -221,7 +233,7 @@ public class NewsFragment extends Fragment {
 
     public interface FirebaseCallback
     {
-        void onCallback(List<String> sources);
+        void onCallback(List<String> source);
     }
 
 
@@ -230,7 +242,7 @@ public class NewsFragment extends Fragment {
     DatabaseReference userrss = reader.child("UserRSS");
 
 
-    public void validateUser(final FirebaseCallback firebaseCallback)
+    public void getSources(final FirebaseCallback firebaseCallback)
     {
         ValueEventListener event = new ValueEventListener() {
             @Override
@@ -253,7 +265,7 @@ public class NewsFragment extends Fragment {
             }
         };
 
-        userrss.child("jihirshu").addValueEventListener(event);
+        userrss.child(MainActivity.user).addValueEventListener(event);
 
 
     }
