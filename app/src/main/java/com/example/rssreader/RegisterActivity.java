@@ -29,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public ArrayList<String> titles = new ArrayList<>();
     public ArrayList<String> links = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
