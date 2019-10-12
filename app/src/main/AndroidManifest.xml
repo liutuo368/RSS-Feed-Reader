@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SourceListActivity"></activity>
+        <activity android:name=".ContentActivity" />
 
         <activity android:name=".ContentActivity"></activity>
         <activity android:name=".RegisterActivity" />
