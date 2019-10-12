@@ -21,6 +21,7 @@ public class SourceListActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.source_list);
         List<Map<String, Object>> list = getData();
         listView.setAdapter(new SourceListAdapter(SourceListActivity.this, list));
+
     }
 
     public List <Map<String, Object>> getData() {
