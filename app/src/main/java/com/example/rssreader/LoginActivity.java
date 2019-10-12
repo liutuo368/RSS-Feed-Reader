@@ -18,6 +18,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     public String validUser = null;
@@ -99,6 +109,8 @@ public class LoginActivity extends AppCompatActivity {
     {
         void onCallback(String username, String password);
     }
+
+
 
 
 }

@@ -48,9 +48,7 @@ public class NewsFragment extends Fragment {
     private List <Map<String, Object>> list;
     private NewsListAdapter adapter;
 
-    public List<String> titles = new ArrayList<>();
-    public List<String> links = new ArrayList<>();
-    public List<String> sources = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -74,20 +72,6 @@ public class NewsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        getSources(new FirebaseCallback() {
-            @Override
-            public void onCallback(List<String> source) {
-                sources = source;
-                if (sources.size() > 0)
-                {
-                    for (int i=0; i < sources.size();i++)
-                    {
-                        new ProcessInBackGround().execute(sources.get(i));
-                    }
-                }
-            }
-        });
 
     }
 
@@ -140,133 +124,16 @@ public class NewsFragment extends Fragment {
 
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < MainActivity.titles.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             map.put("image", R.drawable.ic_launcher_foreground);
-            map.put("title", "News title " + i);
-            map.put("date", df.format(new Date()));
+            map.put("title", MainActivity.titles.get(i));
+            map.put("date", MainActivity.links.get(i));
             list.add(map);
         }
         return list;
     }
 
-    public InputStream getInputStream(URL url)
-    {
-        try
-        {
-            return url.openConnection().getInputStream();
-        }
-        catch (IOException e)
-        {
-            return null;
-        }
-    }
 
-
-
-    public class ProcessInBackGround extends AsyncTask<String, Void, Void>
-    {
-        @Override
-        protected Void doInBackground(String... strings) {
-            Exception exception = null;
-            try
-            {
-                URL Url = new URL(strings[0]);
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(false);
-
-                XmlPullParser xpp = factory.newPullParser();
-                xpp.setInput(getInputStream(Url), "UTF_8");
-
-                boolean insideterm = false;
-
-                int eventType = xpp.getEventType();
-
-                while(eventType != XmlPullParser.END_DOCUMENT)
-                {
-                    if (eventType == XmlPullParser.START_TAG)
-                    {
-                        if (xpp.getName().equalsIgnoreCase("item"))
-                        {
-                            insideterm = true;
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("title"))
-                        {
-                            if (insideterm)
-                            {
-                                titles.add(xpp.nextText());
-                            }
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("link"))
-                        {
-                            if (insideterm)
-                            {
-                                links.add(xpp.nextText());
-                            }
-                        }
-                    }
-                    else if ((eventType == XmlPullParser.END_TAG) && (xpp.getName().equalsIgnoreCase("item")))
-                    {
-                        insideterm = false;
-                    }
-
-                    eventType = xpp.next();
-                }
-
-            }
-            catch (MalformedURLException e)
-            {
-                exception = e;
-            }
-            catch (XmlPullParserException e)
-            {
-                exception = e;
-            }
-            catch (IOException e)
-            {
-                exception = e;
-            }
-            return null;
-        }
-    }
-
-    public interface FirebaseCallback
-    {
-        void onCallback(List<String> source);
-    }
-
-
-    DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference reader = mRootref.child("Reader");
-    DatabaseReference userrss = reader.child("UserRSS");
-
-
-    public void getSources(final FirebaseCallback firebaseCallback)
-    {
-        ValueEventListener event = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null)
-                {
-                    for (DataSnapshot ds : dataSnapshot.getChildren())
-                    {
-                        sources.add(ds.getValue(String.class));
-                    }
-                }
-
-                firebaseCallback.onCallback(sources);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        userrss.child(MainActivity.user).addValueEventListener(event);
-
-
-    }
 }
