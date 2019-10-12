@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        validateUser("jihirshu","asdasda");
 
     }
 
@@ -45,14 +46,15 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference usernameNode = userdata.child("username");
     DatabaseReference passwordNode = userdata.child("password");
 
-    public void validateUser(String username, String password)
+    public void validateUser(String username, final String password)
     {
         userdata.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null)
+                if (dataSnapshot.getValue() != null)
                 {
-                    setValidUser();
+                    if (dataSnapshot.child("password").getValue().equals(password))
+                        setValidUser();
                 }
             }
 
