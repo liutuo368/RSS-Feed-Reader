@@ -28,4 +28,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.facebook.android:facebook-share:[5,6)'
+    implementation 'com.twitter.sdk.android:twitter:3.0.0'
+    implementation 'com.twitter.sdk.android:tweet-composer:3.0.0'
 }
+
