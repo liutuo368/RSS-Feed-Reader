@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class NewsListAdapter extends BaseAdapter {
+public class NewsListAdapter extends BaseAdapter{
 
     private List<Map<String, Object>> data;
     private LayoutInflater layoutInflater;
@@ -31,7 +31,6 @@ public class NewsListAdapter extends BaseAdapter {
     }
 
     public final class News {
-        public ImageView image;
         public TextView title;
         public TextView date;
     }
@@ -57,7 +56,6 @@ public class NewsListAdapter extends BaseAdapter {
         if(convertView == null) {
             news = new News();
             convertView = layoutInflater.inflate(R.layout.news_list, null);
-            news.image = (ImageView) convertView.findViewById(R.id.news_image);
             news.title = (TextView) convertView.findViewById(R.id.news_title);
             news.date = (TextView) convertView.findViewById(R.id.news_date);
             convertView.setTag(news);
@@ -65,34 +63,10 @@ public class NewsListAdapter extends BaseAdapter {
             news = (News) convertView.getTag();
         }
 
-        news.image.setBackgroundResource(R.drawable.com_facebook_button_icon);
-        //news.image.setImageBitmap(getBitmap((String) data.get(position).get("image")));
         news.title.setText((String)data.get(position).get("title"));
         news.date.setText((String) data.get(position).get("date"));
         return convertView;
 
-    }
-
-    public Bitmap getBitmap(String url) {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
     }
 
 }

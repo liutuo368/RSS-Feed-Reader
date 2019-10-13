@@ -42,13 +42,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment{
 
     private ListView listView;
     private List <Map<String, Object>> list;
     private NewsListAdapter adapter;
-
-
 
     @Nullable
     @Override
@@ -64,9 +62,10 @@ public class NewsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.setAction("newsInfo");
                 intent.putExtra("title", (String) list.get(position).get("title"));
-                intent.putExtra("date", (String) list.get(position).get("date"));
-                intent.putExtra("content", MainActivity.description.get(position));
+                intent.putExtra("date", MainActivity.dates.get(MainActivity.links.get(position)));
+                intent.putExtra("content", MainActivity.description.get(MainActivity.links.get(position)));
                 intent.putExtra("link", MainActivity.links.get(position));
+                intent.putExtra("image", MainActivity.images.get(MainActivity.links.get(position)));
                 startActivity(intent);
             }
         });
@@ -129,11 +128,11 @@ public class NewsFragment extends Fragment {
 
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0; i < MainActivity.images.size(); i++) {
+        for(int i = 0; i < MainActivity.titles.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("image", MainActivity.images.get(i));
+            map.put("image", MainActivity.images.get(MainActivity.links.get(i)));
             map.put("title", MainActivity.titles.get(i));
-            map.put("date", MainActivity.dates.get(i));
+            map.put("date", MainActivity.dates.get(MainActivity.links.get(i)));
             list.add(map);
         }
         return list;
