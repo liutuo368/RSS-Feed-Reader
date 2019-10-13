@@ -34,7 +34,7 @@ public class SourceListActivity extends AppCompatActivity {
 
     private ListView listView;
     public static boolean validRSSLink = false;
-    public static boolean removeFlag = false;
+
 
     public class NewSource
     {
