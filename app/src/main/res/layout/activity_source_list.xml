@@ -4,12 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:orientation="vertical"
     tools:context=".SourceListActivity">
 
 
-    <ListView
+    <Button
+        android:id="@+id/button2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/source_list"/>
+        android:layout_height="wrap_content"
+        android:onClick="gotoAddFeed"
+        android:text="Add new feed" />
+
+    <ListView
+        android:id="@+id/source_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

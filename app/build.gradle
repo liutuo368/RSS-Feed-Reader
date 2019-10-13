@@ -32,4 +32,3 @@ dependencies {
     implementation 'com.twitter.sdk.android:twitter:3.0.0'
     implementation 'com.twitter.sdk.android:tweet-composer:3.0.0'
 }
-

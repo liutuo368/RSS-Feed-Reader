@@ -24,19 +24,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class ContentActivity extends AppCompatActivity {
+public class ContentActivity extends AppCompatActivity{
 
     private String uri;
+    TextView newsTitle;
+    TextView newsDate;
+    TextView newsContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         Twitter.initialize(this);
-        TextView newsTitle = (TextView) findViewById(R.id.news_title);
-        TextView newsDate = (TextView) findViewById(R.id.news_date);
-        ImageView newsImage = (ImageView) findViewById(R.id.news_image);
-        TextView newsContent = (TextView) findViewById(R.id.news_content);
+        newsTitle = (TextView) findViewById(R.id.news_title);
+        newsDate = (TextView) findViewById(R.id.news_date);
+        newsContent = (TextView) findViewById(R.id.news_content);
         Intent intent = getIntent();
         String action = intent.getAction();
         if(action.equals("newsInfo")) {
@@ -47,27 +49,7 @@ public class ContentActivity extends AppCompatActivity {
         }
     }
 
-    public Bitmap getBitmap(String url) {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
     public void btnLikeOnClick(View v) {
 
     }
