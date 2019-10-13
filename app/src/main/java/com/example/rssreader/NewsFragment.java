@@ -62,6 +62,11 @@ public class NewsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
+                intent.setAction("newsInfo");
+                intent.putExtra("title", (String) list.get(position).get("title"));
+                intent.putExtra("date", (String) list.get(position).get("date"));
+                intent.putExtra("content", MainActivity.description.get(position));
+                intent.putExtra("link", MainActivity.links.get(position));
                 startActivity(intent);
             }
         });
@@ -126,10 +131,9 @@ public class NewsFragment extends Fragment {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.titles.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            map.put("image", R.drawable.ic_launcher_foreground);
+            //map.put("image", MainActivity.images.get(i));
             map.put("title", MainActivity.titles.get(i));
-            map.put("date", MainActivity.links.get(i));
+            map.put("date", MainActivity.dates.get(i));
             list.add(map);
         }
         return list;

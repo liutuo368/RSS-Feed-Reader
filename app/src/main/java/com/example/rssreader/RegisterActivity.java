@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,14 +41,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerOnClick(View v)
     {
-        EditText Username = (EditText) findViewById(R.id.username);
-        EditText Password = (EditText) findViewById(R.id.password);
+        EditText username = (EditText) findViewById(R.id.username);
+        EditText password = (EditText) findViewById(R.id.password);
+        EditText conPass = (EditText) findViewById(R.id.conpass);
 
-        String user = Username.getText().toString();
-        String password = Password.getText().toString();
-
-        newUser(user, password);
-
+        if(password.getText().toString().equals(conPass.getText().toString())) {
+            newUser(username.getText().toString(), password.getText().toString());
+            Toast.makeText(this, "Sucessfully signed up.", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Password don't match!", Toast.LENGTH_LONG).show();
+        }
 
     }
 

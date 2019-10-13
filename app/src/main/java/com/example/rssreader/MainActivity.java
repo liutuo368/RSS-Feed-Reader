@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Intent intent = getIntent();
         String action = intent.getAction();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
         if(action.equals("user")) {
             user = intent.getStringExtra("username");
         }
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
 
 
     }
