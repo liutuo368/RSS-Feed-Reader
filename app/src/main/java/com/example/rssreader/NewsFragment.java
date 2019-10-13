@@ -131,7 +131,7 @@ public class NewsFragment extends Fragment {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.titles.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            //map.put("image", MainActivity.images.get(i));
+            map.put("image", MainActivity.images.get(i));
             map.put("title", MainActivity.titles.get(i));
             map.put("date", MainActivity.dates.get(i));
             list.add(map);

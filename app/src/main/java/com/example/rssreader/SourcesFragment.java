@@ -64,9 +64,9 @@ public class SourcesFragment extends Fragment {
 
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0; i < MainActivity.usersources.size(); i++) {
+        for(int i = 0; i < MainActivity.usersourcenames.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("sourceName", MainActivity.usersources.get(i));
+            map.put("sourceName", MainActivity.usersourcenames.get(i));
             list.add(map);
         }
         return list;
