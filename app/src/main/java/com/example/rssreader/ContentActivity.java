@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.CharMatcher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +22,7 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 
 
 public class ContentActivity extends AppCompatActivity{
@@ -79,12 +81,17 @@ public class ContentActivity extends AppCompatActivity{
 
     public void addUserfavourites(final String title, final String link)
     {
+        String charsToRemove = ".#$[]";
+
+        final String filtered = CharMatcher.anyOf(charsToRemove).removeFrom(title);
+
         favourites.child(MainActivity.user).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if ((dataSnapshot.getValue() == null) || (dataSnapshot.child(link).getValue() == null))
+                if ((dataSnapshot.getValue() == null) || (dataSnapshot.child(filtered).getValue() == null))
                 {
-                    favourites.child(MainActivity.user).child(link).setValue(title);
+                    favourites.child(MainActivity.user).child(filtered).child("title").setValue(title);
+                    favourites.child(MainActivity.user).child(filtered).child("link").setValue(link);
                 }
             }
 

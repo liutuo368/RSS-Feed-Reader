@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.common.base.CharMatcher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -77,7 +78,10 @@ public class FavoritesFragment extends Fragment {
 
     public void removeFavourites(String title, String link)
     {
-        favourites.child(MainActivity.user).child(link).removeValue();
+        String charsToRemove = ".#$[]";
+
+        final String filtered = CharMatcher.anyOf(charsToRemove).removeFrom(title);
+        favourites.child(MainActivity.user).child(title).removeValue();
     }
 
 }
