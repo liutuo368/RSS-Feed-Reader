@@ -150,8 +150,10 @@ public class SourceListActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             Exception exception = null;
+            String link = "";
             try
             {
+
                 URL Url = new URL(strings[0]);
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);
@@ -182,28 +184,29 @@ public class SourceListActivity extends AppCompatActivity {
                         {
                             if (insideterm)
                             {
-                                MainActivity.links.add(xpp.nextText());
+                                link = xpp.nextText();
+                                MainActivity.links.add(link);
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("pubDate"))
                         {
                             if (insideterm)
                             {
-                                MainActivity.dates.add(xpp.nextText());
+                                MainActivity.dates.put(link, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("image"))
                         {
                             if (insideterm)
                             {
-                                MainActivity.images.add(xpp.nextText());
+                                MainActivity.images.put(link, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("description"))
                         {
                             if (insideterm)
                             {
-                                MainActivity.description.add(xpp.nextText());
+                                MainActivity.description.put(link, xpp.nextText());
                             }
                         }
                     }
