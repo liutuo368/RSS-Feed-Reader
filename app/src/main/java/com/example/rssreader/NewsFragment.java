@@ -129,7 +129,7 @@ public class NewsFragment extends Fragment {
 
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0; i < MainActivity.titles.size(); i++) {
+        for(int i = 0; i < MainActivity.images.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("image", MainActivity.images.get(i));
             map.put("title", MainActivity.titles.get(i));
