@@ -84,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
     public void createNewUser(String username, String password)
     {
         userdata.child(username).setValue(new User(username, password));
-
     }
 
 

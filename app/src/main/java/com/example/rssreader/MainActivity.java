@@ -39,9 +39,13 @@ public class MainActivity extends AppCompatActivity {
     public static List<String> titles = new ArrayList<>();
     public static List<String> links = new ArrayList<>();
     public static List<String> dates = new ArrayList<>();
-    public static List<String> usersources = new ArrayList<>();
+    public static List<String> usersourcelinks = new ArrayList<>();
+    public static List<String> usersourcenames = new ArrayList<>();
     public static List<String> images = new ArrayList<>();
     public static List<String> description = new ArrayList<>();
+    public static List<String> appsourcesLinks = new ArrayList<>();
+    public static List<String> appSourcesNames = new ArrayList<>();
+    public static List<String> appSourcesCategories = new ArrayList<>();
 
     Button btn;
 
@@ -79,23 +83,33 @@ public class MainActivity extends AppCompatActivity {
             user = intent.getStringExtra("username");
         }
 
-        getSources(new FirebaseCallback() {
+        getuserSources(new FirebaseCallback() {
             @Override
-            public void onCallback(List<String> source) {
-                MainActivity.usersources = source;
+            public void onCallback(List<String> usersourcenames, List<String> usersourcelinks) {
+                MainActivity.usersourcenames = usersourcenames;
+                MainActivity.usersourcelinks = usersourcelinks;
 
-                if (source.size()>0)
+                if (usersourcelinks.size()>0)
                 {
-                    for (int i=0;i<source.size();i++)
+                    for (int i=0;i<usersourcelinks.size();i++)
                     {
-                        new ProcessInBackGround().execute(source.get(i));
+                        new ProcessInBackGround().execute(usersourcelinks.get(i));
                     }
                 }
+
             }
         });
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
 
-
+        getSources(new FirebaseCallback2() {
+            @Override
+            public void onCallback(List<String> rsssources, List<String> Categories, List<String> rssLinks)
+            {
+                MainActivity.appSourcesNames = rsssources;
+                MainActivity.appSourcesCategories = Categories;
+                MainActivity.appsourcesLinks = rssLinks;
+            }
+        });
     }
 
     public InputStream getInputStream(URL url)
@@ -201,16 +215,17 @@ public class MainActivity extends AppCompatActivity {
 
     public interface FirebaseCallback
     {
-        void onCallback(List<String> source);
+        void onCallback(List<String> sourcenames, List<String> sourcelinks);
     }
 
 
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference userrss = reader.child("UserRSS");
+    DatabaseReference sourcedb = reader.child("Sources");
 
 
-    public void getSources(final FirebaseCallback firebaseCallback)
+    public void getuserSources(final FirebaseCallback firebaseCallback)
     {
         ValueEventListener event = new ValueEventListener() {
             @Override
@@ -219,11 +234,12 @@ public class MainActivity extends AppCompatActivity {
                 {
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
-                        usersources.add(ds.getValue(String.class));
+                        usersourcenames.add(ds.getKey());
+                        usersourcelinks.add(ds.getValue(String.class));
                     }
                 }
 
-                firebaseCallback.onCallback(usersources);
+                firebaseCallback.onCallback(usersourcenames, usersourcelinks);
 
             }
 
@@ -235,6 +251,41 @@ public class MainActivity extends AppCompatActivity {
 
         userrss.child(MainActivity.user).addValueEventListener(event);
 
+
+    }
+
+
+    public interface FirebaseCallback2
+    {
+        void onCallback(List<String> rsssources, List<String> Categories, List<String> rssLinks);
+    }
+
+
+    public void getSources(final FirebaseCallback2 firebaseCallback2)
+    {
+        ValueEventListener event = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    appsourcesLinks.add(ds.child("Link").getValue(String.class));
+                    appSourcesCategories.add(ds.child("Category").getValue(String.class));
+                    appSourcesNames.add(ds.getKey());
+                }
+
+                firebaseCallback2.onCallback(appSourcesNames, appSourcesCategories, appsourcesLinks);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        };
+
+        sourcedb.addValueEventListener(event);
 
     }
 
