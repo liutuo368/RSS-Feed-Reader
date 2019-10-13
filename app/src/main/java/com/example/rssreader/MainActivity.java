@@ -40,17 +40,20 @@ public class MainActivity extends AppCompatActivity {
     public static String user;
     public static List<String> titles = new ArrayList<>();
     public static List<String> links = new ArrayList<>();
-//    public static List<String> dates = new ArrayList<>();
+
     public static List<String> usersourcelinks = new ArrayList<>();
     public static List<String> usersourcenames = new ArrayList<>();
-//    public static List<String> images = new ArrayList<>();
-//    public static List<String> description = new ArrayList<>();
+
+
     public static List<String> appsourcesLinks = new ArrayList<>();
     public static List<String> appSourcesNames = new ArrayList<>();
     public static List<String> appSourcesCategories = new ArrayList<>();
     public static Map<String,String> images = new HashMap<>();
     public static Map<String,String> description = new HashMap<>();
     public static Map<String,String> dates = new HashMap<>();
+
+    public static List<String> favouriteLinks = new ArrayList<>();
+    public static List<String> favouriteTitles = new ArrayList<>();
 
     Button btn;
 
@@ -104,6 +107,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        getUserFavourites(new FirebaseCallback() {
+            @Override
+            public void onCallback(List<String> favouriteLink, List<String> favouriteTitle) {
+                favouriteLinks = favouriteLink;
+                favouriteTitles = favouriteTitle;
+
+            }
+        });
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
 
         getSources(new FirebaseCallback2() {
@@ -230,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference userrss = reader.child("UserRSS");
     DatabaseReference sourcedb = reader.child("Sources");
+    DatabaseReference favourites = reader.child("Favourites");
 
 
     public void getuserSources(final FirebaseCallback firebaseCallback)
@@ -293,6 +307,35 @@ public class MainActivity extends AppCompatActivity {
         };
 
         sourcedb.addValueEventListener(event);
+
+    }
+
+
+    public void getUserFavourites(final FirebaseCallback firebaseCallback)
+    {
+        ValueEventListener event = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.getValue() != null)
+                {
+                    for (DataSnapshot ds : dataSnapshot.getChildren())
+                    {
+                        favouriteLinks.add(ds.getKey());
+                        favouriteTitles.add(ds.getValue(String.class));
+                    }
+                }
+                firebaseCallback.onCallback(favouriteLinks, favouriteTitles);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        };
+
+        favourites.child(MainActivity.user).addListenerForSingleValueEvent(event);
 
     }
 
