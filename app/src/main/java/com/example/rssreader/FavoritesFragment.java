@@ -39,6 +39,11 @@ public class FavoritesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
+                intent.setAction("newsInfo");
+                intent.putExtra("title", (String) list.get(position).get("title"));
+                intent.putExtra("date", MainActivity.dates.get(MainActivity.favouriteLinks.get(position)));
+                intent.putExtra("content", MainActivity.description.get(MainActivity.favouriteLinks.get(position)));
+                intent.putExtra("link", MainActivity.favouriteLinks.get(position));
                 startActivity(intent);
             }
         });
@@ -46,7 +51,7 @@ public class FavoritesFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //removeFavourites();
+                removeFavourites(MainActivity.favouriteTitles.get(i), MainActivity.favouriteLinks.get(i));
                 list.remove(i);
                 adapter.notifyDataSetChanged();
                 return true;
@@ -60,11 +65,10 @@ public class FavoritesFragment extends Fragment {
 
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < MainActivity.favouriteTitles.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("image", R.drawable.ic_launcher_foreground);
-            map.put("title", "Favorite News: " + i);
-            map.put("date", "2018");
+            map.put("title", MainActivity.favouriteTitles.get(i));
+            map.put("date", MainActivity.dates.get(MainActivity.favouriteLinks.get(i)));
             list.add(map);
         }
         return list;

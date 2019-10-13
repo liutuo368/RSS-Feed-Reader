@@ -1,15 +1,9 @@
 package com.example.rssreader;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<String> favouriteLinks = new ArrayList<>();
     public static List<String> favouriteTitles = new ArrayList<>();
-
-    Button btn;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -117,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
-
         getSources(new FirebaseCallback2() {
             @Override
             public void onCallback(List<String> rsssources, List<String> Categories, List<String> rssLinks)
@@ -128,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.appsourcesLinks = rssLinks;
             }
         });
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
     }
 
     public InputStream getInputStream(URL url)

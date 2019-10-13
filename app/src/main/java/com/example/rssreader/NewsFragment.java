@@ -65,7 +65,6 @@ public class NewsFragment extends Fragment{
                 intent.putExtra("date", MainActivity.dates.get(MainActivity.links.get(position)));
                 intent.putExtra("content", MainActivity.description.get(MainActivity.links.get(position)));
                 intent.putExtra("link", MainActivity.links.get(position));
-                intent.putExtra("image", MainActivity.images.get(MainActivity.links.get(position)));
                 startActivity(intent);
             }
         });
