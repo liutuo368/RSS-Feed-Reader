@@ -15,6 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +30,7 @@ public class SourcesFragment extends Fragment {
 
     private ListView listView;
     private FloatingActionButton addButton;
+    public static boolean removeFlag = true;
 
     @Nullable
     @Override
@@ -71,5 +77,45 @@ public class SourcesFragment extends Fragment {
         }
         return list;
     }
+
+    DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference reader = mRootref.child("Reader");
+    DatabaseReference sourcedb = reader.child("Sources");
+    DatabaseReference userRss = reader.child("UserRSS");
+
+
+    public void removeUserSource(String name, String link)
+    {
+        checkLinkValidity(name, link);
+        if (removeFlag)
+        {
+            userRss.child(MainActivity.user).child(name.toUpperCase()).removeValue();
+        }
+    }
+
+    public void checkLinkValidity(final String name, final String link)
+    {
+
+
+        userRss.child(MainActivity.user).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.child(name).getValue().equals(link))
+                {
+                    removeFlag = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
 
 }

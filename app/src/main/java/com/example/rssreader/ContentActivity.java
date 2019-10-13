@@ -1,5 +1,6 @@
 package com.example.rssreader;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,6 +13,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
@@ -32,7 +38,8 @@ public class ContentActivity extends AppCompatActivity{
     TextView newsContent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         Twitter.initialize(this);
@@ -41,7 +48,8 @@ public class ContentActivity extends AppCompatActivity{
         newsContent = (TextView) findViewById(R.id.news_content);
         Intent intent = getIntent();
         String action = intent.getAction();
-        if(action.equals("newsInfo")) {
+        if(action.equals("newsInfo"))
+        {
             newsTitle.setText(intent.getStringExtra("title"));
             newsDate.setText(intent.getStringExtra("date"));
             newsContent.setText(Html.fromHtml(intent.getStringExtra("content")));
@@ -70,4 +78,31 @@ public class ContentActivity extends AppCompatActivity{
         intent.setData(uri);
         startActivity(intent);
     }
+
+    DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference reader = mRootref.child("Reader");
+    DatabaseReference favourites = reader.child("Favourites");
+
+    public void addUserfavourites(final String title, final String link)
+    {
+        favourites.child(MainActivity.user).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.getValue() == null) || (dataSnapshot.child(link).getValue() == null))
+                {
+                    favourites.child(MainActivity.user).child(link).setValue(title);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
+
 }

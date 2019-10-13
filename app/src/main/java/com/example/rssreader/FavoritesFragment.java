@@ -12,6 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +26,7 @@ import java.util.Map;
 public class FavoritesFragment extends Fragment {
 
     private ListView listView;
-
+    public static boolean removeFlag=false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,6 +67,16 @@ public class FavoritesFragment extends Fragment {
             list.add(map);
         }
         return list;
+    }
+
+
+    DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference reader = mRootref.child("Reader");
+    DatabaseReference favourites = reader.child("Favourites");
+
+    public void removeFavourites(String title, String link)
+    {
+        favourites.child(MainActivity.user).child(link).removeValue();
     }
 
 }

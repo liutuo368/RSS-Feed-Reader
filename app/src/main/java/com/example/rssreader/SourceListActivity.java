@@ -120,6 +120,7 @@ public class SourceListActivity extends AppCompatActivity {
     }
 
 
+
     public String addRssSource(final String name, final String Link, final String Category)
     {
         String result = "";
