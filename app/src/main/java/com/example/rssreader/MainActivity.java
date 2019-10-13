@@ -312,8 +312,8 @@ public class MainActivity extends AppCompatActivity {
                 {
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
-                        favouriteLinks.add(ds.getKey());
-                        favouriteTitles.add(ds.getValue(String.class));
+                        favouriteLinks.add(ds.child("link").getValue(String.class));
+                        favouriteTitles.add(ds.child("title").getValue(String.class));
                     }
                 }
                 firebaseCallback.onCallback(favouriteLinks, favouriteTitles);
