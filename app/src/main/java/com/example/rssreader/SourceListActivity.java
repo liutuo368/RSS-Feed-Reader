@@ -34,7 +34,7 @@ public class SourceListActivity extends AppCompatActivity {
 
     private ListView listView;
     public static boolean validRSSLink = false;
-
+    public static boolean removeFlag = false;
 
     public class NewSource
     {
@@ -111,6 +111,7 @@ public class SourceListActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     public String addRssSource(final String name, final String Link, final String Category)
