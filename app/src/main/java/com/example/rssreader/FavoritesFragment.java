@@ -66,7 +66,7 @@ public class FavoritesFragment extends Fragment {
 
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for(int i = 0; i < MainActivity.favouriteTitles.size(); i++) {
+        for(int i = 0; i < MainActivity.favouriteLinks.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", MainActivity.favouriteTitles.get(i));
             map.put("date", MainActivity.dates.get(MainActivity.favouriteLinks.get(i)));
