@@ -31,21 +31,26 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     public static String user;
     public static List<String> titles = new ArrayList<>();
     public static List<String> links = new ArrayList<>();
-    public static List<String> dates = new ArrayList<>();
+//    public static List<String> dates = new ArrayList<>();
     public static List<String> usersourcelinks = new ArrayList<>();
     public static List<String> usersourcenames = new ArrayList<>();
-    public static List<String> images = new ArrayList<>();
-    public static List<String> description = new ArrayList<>();
+//    public static List<String> images = new ArrayList<>();
+//    public static List<String> description = new ArrayList<>();
     public static List<String> appsourcesLinks = new ArrayList<>();
     public static List<String> appSourcesNames = new ArrayList<>();
     public static List<String> appSourcesCategories = new ArrayList<>();
+    public static Map<String,String> images = new HashMap<>();
+    public static Map<String,String> description = new HashMap<>();
+    public static Map<String,String> dates = new HashMap<>();
 
     Button btn;
 
@@ -131,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             Exception exception = null;
+            String link="";
             try
             {
                 URL Url = new URL(strings[0]);
@@ -163,28 +169,29 @@ public class MainActivity extends AppCompatActivity {
                         {
                             if (insideterm)
                             {
-                                links.add(xpp.nextText());
+                                link = xpp.nextText();
+                                links.add(link);
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("pubDate"))
                         {
                             if (insideterm)
                             {
-                                dates.add(xpp.nextText());
+                                dates.put(link, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("image"))
                         {
                             if (insideterm)
                             {
-                                images.add(xpp.nextText());
+                                images.put(link, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("description"))
                         {
                             if (insideterm)
                             {
-                                description.add(xpp.nextText());
+                                description.put(link, xpp.nextText());
                             }
                         }
                     }
