@@ -1,8 +1,13 @@
 package com.example.rssreader;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +36,9 @@ import java.util.Map;
 public class SourcesFragment extends Fragment {
 
     private ListView listView;
-    private FloatingActionButton addButton;
+    Button addButton;
+
+
     public static boolean removeFlag = true;
 
     @Nullable
@@ -37,6 +46,7 @@ public class SourcesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sources, container, false);
         listView = (ListView) view.findViewById(R.id.sourcesList);
+        addButton = (Button) view.findViewById(R.id.btnAddSources);
         final List<Map<String, Object>> list = getData();
         final SourceListAdapter adapter = new SourceListAdapter(getActivity(), list);
         listView.setAdapter(adapter);
@@ -44,27 +54,26 @@ public class SourcesFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                removeUserSource(MainActivity.usersourcenames.get(i), MainActivity.usersourcelinks.get(i));
                 list.remove(i);
                 adapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(),"Source removed", Toast.LENGTH_LONG).show();
                 return true;
             }
         });
-
-
-        addButton = (FloatingActionButton) view.findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SourceListActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SourceListActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
 

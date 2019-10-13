@@ -52,7 +52,6 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Password don't match!", Toast.LENGTH_LONG).show();
         }
-
     }
 
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();

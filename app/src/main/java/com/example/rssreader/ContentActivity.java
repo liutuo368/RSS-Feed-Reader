@@ -4,14 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,11 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -59,7 +52,8 @@ public class ContentActivity extends AppCompatActivity{
 
 
     public void btnLikeOnClick(View v) {
-
+        addUserfavourites(newsTitle.getText().toString(), uri);
+        Toast.makeText(this, "Added to favorite", Toast.LENGTH_LONG).show();
     }
 
     public void btnShareOnClick(View v) {
@@ -100,9 +94,5 @@ public class ContentActivity extends AppCompatActivity{
             }
         });
     }
-
-
-
-
 
 }

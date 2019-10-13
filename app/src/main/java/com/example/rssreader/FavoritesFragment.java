@@ -46,6 +46,7 @@ public class FavoritesFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //removeFavourites();
                 list.remove(i);
                 adapter.notifyDataSetChanged();
                 return true;
