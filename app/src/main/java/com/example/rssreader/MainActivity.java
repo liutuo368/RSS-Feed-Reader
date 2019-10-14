@@ -72,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onDestroy() {
+        System.exit(0);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -118,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.appsourcesLinks = rssLinks;
             }
         });
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeFragment()).commit();
     }
 
     public InputStream getInputStream(URL url)
