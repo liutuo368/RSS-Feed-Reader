@@ -244,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null)
                 {
+                    usersourcenames = new ArrayList<>();
+                    usersourcelinks = new ArrayList<>();
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
                         usersourcenames.add(ds.getKey());
