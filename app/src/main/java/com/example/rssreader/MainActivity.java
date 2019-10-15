@@ -73,11 +73,17 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onDestroy() {
+        System.exit(0);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        final BottomNavigationView navView = findViewById(R.id.nav_view);
-//        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setContentView(R.layout.activity_main);
+        final BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Intent intent = getIntent();
         String action = intent.getAction();
         if(action.equals("user")) {
@@ -119,16 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.appsourcesLinks = rssLinks;
             }
         });
-//        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        final BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        Intent intent = getIntent();
-//        String action = intent.getAction();
-//        if(action.equals("user")) {
-//            user = intent.getStringExtra("username");
-//        }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NewsFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeFragment()).commit();
     }
 
     public InputStream getInputStream(URL url)
@@ -259,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null)
                 {
+                    usersourcenames = new ArrayList<>();
+                    usersourcelinks = new ArrayList<>();
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
                         usersourcenames.add(ds.getKey());
