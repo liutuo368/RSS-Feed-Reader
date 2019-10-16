@@ -158,7 +158,7 @@ public class SourceListActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             Exception exception = null;
-            String link = "";
+            String title = "";
             try
             {
 
@@ -185,36 +185,36 @@ public class SourceListActivity extends AppCompatActivity {
                         {
                             if (insideterm)
                             {
-                                MainActivity.titles.add(xpp.nextText());
+                                title = xpp.nextText();
+                                MainActivity.titles.add(title);
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("link"))
                         {
                             if (insideterm)
                             {
-                                link = xpp.nextText();
-                                MainActivity.links.add(link);
+                                MainActivity.links.add(xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("pubDate"))
                         {
                             if (insideterm)
                             {
-                                MainActivity.dates.put(link, xpp.nextText());
+                                MainActivity.dates.put(title, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("image"))
                         {
                             if (insideterm)
                             {
-                                MainActivity.images.put(link, xpp.nextText());
+                                MainActivity.images.put(title, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("description"))
                         {
                             if (insideterm)
                             {
-                                MainActivity.description.put(link, xpp.nextText());
+                                MainActivity.description.put(title, xpp.nextText());
                             }
                         }
                     }

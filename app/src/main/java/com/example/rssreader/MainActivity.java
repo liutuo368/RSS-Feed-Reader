@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             Exception exception = null;
-            String link="";
+            String title="";
             try
             {
                 URL Url = new URL(strings[0]);
@@ -185,36 +185,37 @@ public class MainActivity extends AppCompatActivity {
                         {
                             if (insideterm)
                             {
-                                titles.add(xpp.nextText());
+                                title = xpp.nextText();
+                                titles.add(title);
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("link"))
                         {
                             if (insideterm)
                             {
-                                link = xpp.nextText();
-                                links.add(link);
+
+                                links.add(xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("pubDate"))
                         {
                             if (insideterm)
                             {
-                                dates.put(link, xpp.nextText());
+                                dates.put(title, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("image"))
                         {
                             if (insideterm)
                             {
-                                images.put(link, xpp.nextText());
+                                images.put(title, xpp.nextText());
                             }
                         }
                         else if (xpp.getName().equalsIgnoreCase("description"))
                         {
                             if (insideterm)
                             {
-                                description.put(link, xpp.nextText());
+                                description.put(title, xpp.nextText());
                             }
                         }
                     }
