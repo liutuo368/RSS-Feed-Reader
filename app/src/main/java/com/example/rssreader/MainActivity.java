@@ -90,14 +90,21 @@ public class MainActivity extends AppCompatActivity {
             user = intent.getStringExtra("username");
         }
 
+
         getuserSources(new FirebaseCallback() {
             @Override
             public void onCallback(List<String> usersourcenames, List<String> usersourcelinks) throws ExecutionException, InterruptedException {
                 MainActivity.usersourcenames = usersourcenames;
                 MainActivity.usersourcelinks = usersourcelinks;
+                titles = new ArrayList<>();
+                links = new ArrayList<>();
 
+                dates = new HashMap<>();
+                images = new HashMap<>();
+                description = new HashMap<>();
                 if (usersourcelinks.size()>0)
                 {
+
                     for (int i=0;i<usersourcelinks.size();i++)
                     {
                         String str_result = new ProcessInBackGround().execute(usersourcelinks.get(i)).get();
@@ -254,10 +261,10 @@ public class MainActivity extends AppCompatActivity {
         ValueEventListener event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersourcenames = new ArrayList<>();
+                usersourcelinks = new ArrayList<>();
                 if (dataSnapshot.getValue() != null)
                 {
-                    usersourcenames = new ArrayList<>();
-                    usersourcelinks = new ArrayList<>();
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
                         usersourcenames.add(ds.getKey());
@@ -280,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+
 
         userrss.child(MainActivity.user).addValueEventListener(event);
 

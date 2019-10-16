@@ -3,6 +3,7 @@ package com.example.rssreader;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class SourcesFragment extends Fragment {
 
@@ -54,7 +56,13 @@ public class SourcesFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                removeUserSource(MainActivity.usersourcenames.get(i), MainActivity.usersourcelinks.get(i));
+                try {
+                    removeUserSource(MainActivity.usersourcenames.get(i), MainActivity.usersourcelinks.get(i));
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 list.remove(i);
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(),"Source removed", Toast.LENGTH_LONG).show();
@@ -93,13 +101,9 @@ public class SourcesFragment extends Fragment {
     DatabaseReference userRss = reader.child("UserRSS");
 
 
-    public void removeUserSource(String name, String link)
-    {
-        checkLinkValidity(name, link);
-        if (removeFlag)
-        {
-            userRss.child(MainActivity.user).child(name.toUpperCase()).removeValue();
-        }
+    public void removeUserSource(String name, String link) throws ExecutionException, InterruptedException {
+        removeFlag = false;
+        String exec_result = new ProcessInBackground().execute(name, link).get();
     }
 
     public void checkLinkValidity(final String name, final String link)
@@ -121,6 +125,38 @@ public class SourcesFragment extends Fragment {
 
             }
         });
+    }
+
+
+    public class ProcessInBackground extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(final String... strings)
+        {
+
+            userRss.child(MainActivity.user).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    if (dataSnapshot.child(strings[0]).getValue().equals(strings[1]))
+                    {
+                        removeFlag = true;
+                        userRss.child(MainActivity.user).child(strings[0].toUpperCase()).removeValue();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            return "executed";
+        }
     }
 
 
