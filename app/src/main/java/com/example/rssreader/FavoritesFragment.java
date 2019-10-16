@@ -52,7 +52,7 @@ public class FavoritesFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                removeFavourites(MainActivity.favouriteTitles.get(i), MainActivity.favouriteLinks.get(i));
+                removeFavourites(MainActivity.favouriteTitles.get(i));
                 list.remove(i);
                 adapter.notifyDataSetChanged();
                 return true;
@@ -80,7 +80,7 @@ public class FavoritesFragment extends Fragment {
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference favourites = reader.child("Favourites");
 
-    public void removeFavourites(String title, String link)
+    public void removeFavourites(String title)
     {
         String charsToRemove = ".#$[]";
 

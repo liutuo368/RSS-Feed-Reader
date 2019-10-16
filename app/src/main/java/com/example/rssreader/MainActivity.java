@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<String> favouriteLinks = new ArrayList<>();
     public static List<String> favouriteTitles = new ArrayList<>();
+    public static List<String> favouriteDescriptions = new ArrayList<>();
+    public static List<String> favouriteDates = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -342,12 +344,16 @@ public class MainActivity extends AppCompatActivity {
             {
                 favouriteLinks = new ArrayList<>();
                 favouriteTitles = new ArrayList<>();
+                favouriteDescriptions = new ArrayList<>();
+                favouriteDates = new ArrayList<>();
                 if (dataSnapshot.getValue() != null)
                 {
                     for (DataSnapshot ds : dataSnapshot.getChildren())
                     {
                         favouriteLinks.add(ds.child("link").getValue(String.class));
                         favouriteTitles.add(ds.child("title").getValue(String.class));
+                        favouriteDescriptions.add(ds.child("description").getValue(String.class));
+                        favouriteDates.add(ds.child("date").getValue(String.class));
                     }
                 }
                 try {

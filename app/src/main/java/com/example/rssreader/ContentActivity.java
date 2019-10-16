@@ -54,7 +54,7 @@ public class ContentActivity extends AppCompatActivity{
 
 
     public void btnLikeOnClick(View v) {
-        addUserfavourites(newsTitle.getText().toString(), uri);
+        addUserfavourites(newsTitle.getText().toString(), uri, "","");
         Toast.makeText(this, "Added to favorite", Toast.LENGTH_LONG).show();
     }
 
@@ -79,7 +79,7 @@ public class ContentActivity extends AppCompatActivity{
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference favourites = reader.child("Favourites");
 
-    public void addUserfavourites(final String title, final String link)
+    public void addUserfavourites(final String title, final String link, final String description, final String date)
     {
         String charsToRemove = ".#$[]";
 
@@ -92,6 +92,8 @@ public class ContentActivity extends AppCompatActivity{
                 {
                     favourites.child(MainActivity.user).child(filtered).child("title").setValue(title);
                     favourites.child(MainActivity.user).child(filtered).child("link").setValue(link);
+                    favourites.child(MainActivity.user).child(filtered).child("description").setValue(description);
+                    favourites.child(MainActivity.user).child(filtered).child("date").setValue(date);
                 }
             }
 
