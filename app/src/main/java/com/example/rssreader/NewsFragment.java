@@ -60,8 +60,8 @@ public class NewsFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.setAction("newsInfo");
                 intent.putExtra("title", (String) list.get(position).get("title"));
-                intent.putExtra("date", MainActivity.dates.get(MainActivity.links.get(position)));
-                intent.putExtra("content", MainActivity.description.get(MainActivity.links.get(position)));
+                intent.putExtra("date", MainActivity.dates.get(MainActivity.titles.get(position)));
+                intent.putExtra("content", MainActivity.description.get(MainActivity.titles.get(position)));
                 intent.putExtra("link", MainActivity.links.get(position));
                 startActivity(intent);
             }
@@ -142,9 +142,8 @@ public class NewsFragment extends Fragment{
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.titles.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("image", MainActivity.images.get(MainActivity.links.get(i)));
             map.put("title", MainActivity.titles.get(i));
-            map.put("date", MainActivity.dates.get(MainActivity.links.get(i)));
+            map.put("date", MainActivity.dates.get(MainActivity.titles.get(i)));
             list.add(map);
         }
         return list;

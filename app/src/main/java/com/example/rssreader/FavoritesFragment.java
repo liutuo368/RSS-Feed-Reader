@@ -41,9 +41,9 @@ public class FavoritesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.setAction("newsInfo");
-                intent.putExtra("title", (String) list.get(position).get("title"));
-                intent.putExtra("date", MainActivity.dates.get(MainActivity.favouriteLinks.get(position)));
-                intent.putExtra("content", MainActivity.description.get(MainActivity.favouriteLinks.get(position)));
+                intent.putExtra("title", MainActivity.favouriteTitles.get(position));
+                intent.putExtra("date", MainActivity.favouriteDates.get(position));
+                intent.putExtra("content", MainActivity.favouriteDescriptions.get(position));
                 intent.putExtra("link", MainActivity.favouriteLinks.get(position));
                 startActivity(intent);
             }
@@ -69,7 +69,7 @@ public class FavoritesFragment extends Fragment {
         for(int i = 0; i < MainActivity.favouriteLinks.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", MainActivity.favouriteTitles.get(i));
-            map.put("date", MainActivity.dates.get(MainActivity.favouriteLinks.get(i)));
+            map.put("date", MainActivity.favouriteDates.get(i));
             list.add(map);
         }
         return list;

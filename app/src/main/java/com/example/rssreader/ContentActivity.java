@@ -28,6 +28,10 @@ import java.net.URL;
 public class ContentActivity extends AppCompatActivity{
 
     private String uri;
+    private String title;
+    private String date;
+    private String description;
+
     TextView newsTitle;
     TextView newsDate;
     TextView newsContent;
@@ -45,16 +49,20 @@ public class ContentActivity extends AppCompatActivity{
         String action = intent.getAction();
         if(action.equals("newsInfo"))
         {
-            newsTitle.setText(intent.getStringExtra("title"));
-            newsDate.setText(intent.getStringExtra("date"));
-            newsContent.setText(Html.fromHtml(intent.getStringExtra("content")));
+            title = intent.getStringExtra("title");
+            date = intent.getStringExtra("date");
+            description = intent.getStringExtra("content");
             uri = intent.getStringExtra("link");
         }
+
+        newsTitle.setText(title);
+        newsDate.setText(date);
+        newsContent.setText(Html.fromHtml(intent.getStringExtra("content")));
     }
 
 
     public void btnLikeOnClick(View v) {
-        addUserfavourites(newsTitle.getText().toString(), uri, "","");
+        addUserfavourites(title, uri, description, date);
         Toast.makeText(this, "Added to favorite", Toast.LENGTH_LONG).show();
     }
 

@@ -12,7 +12,8 @@
             android:layout_marginRight="5dp"
             android:maxLines="1"
             android:text="title"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/news_date"
