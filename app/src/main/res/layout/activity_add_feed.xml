@@ -26,12 +26,12 @@
         android:layout_height="wrap_content"
         android:text="Category:" />
 
-    <EditText
-        android:id="@+id/feedCategory"
+
+
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        android:id="@+id/category_choose"/>
 
     <TextView
         android:id="@+id/textView5"
