@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,10 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddFeedActivity extends AppCompatActivity {
 
     public static boolean validRSSLink = false;
+    Spinner spinner;
 
     public class NewSource
     {
@@ -44,13 +49,26 @@ public class AddFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_feed);
+        addListOnSpinner();
+    }
+
+    public void addListOnSpinner() {
+        spinner = (Spinner)findViewById(R.id.category_choose);
+        List<String> list = new ArrayList<>();
+        list.add("News");
+        list.add("Entertainment");
+        list.add("Sports");
+        list.add("Weather");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
     }
 
     public void addFeed(View v) {
         EditText name = (EditText) findViewById(R.id.feedName);
-        EditText category = (EditText) findViewById(R.id.feedCategory);
         EditText link = (EditText) findViewById(R.id.feedLink);
-        if(addRssSource(name.getText().toString(), link.getText().toString(), category.getText().toString()).equals("Valid Link, Added")) {
+        if(addRssSource(name.getText().toString(), link.getText().toString(), String.valueOf(spinner.getSelectedItem())).equals("Valid Link, Added")) {
             Toast.makeText(getApplicationContext(), "New feed added", Toast.LENGTH_LONG).show();
             finish();
         } else {
