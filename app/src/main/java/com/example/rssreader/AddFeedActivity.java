@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,18 +33,6 @@ public class AddFeedActivity extends AppCompatActivity {
 
     public static boolean validRSSLink = false;
     Spinner spinner;
-
-    public class NewSource
-    {
-        public String Category;
-        public String Link;
-
-        public NewSource(String Category, String Link)
-        {
-            this.Category = Category;
-            this.Link = Link;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +54,7 @@ public class AddFeedActivity extends AppCompatActivity {
 
     }
 
-    public void addFeed(View v) {
+    public void addFeed(View v) throws ExecutionException, InterruptedException {
         EditText name = (EditText) findViewById(R.id.feedName);
         EditText link = (EditText) findViewById(R.id.feedLink);
         if(addRssSource(name.getText().toString(), link.getText().toString(), String.valueOf(spinner.getSelectedItem())).equals("Valid Link, Added")) {
@@ -94,20 +83,19 @@ public class AddFeedActivity extends AppCompatActivity {
         }
     }
 
-    public String addRssSource(final String name, final String Link, final String Category)
-    {
+    public String addRssSource(final String name, final String Link, final String Category) throws ExecutionException, InterruptedException {
         String result = "";
         validRSSLink = false;
-        new ProcessInBackGround().execute(Link);
+        String execResult = new ProcessInBackGround().execute(Link).get();
 
         if (validRSSLink)
         {
-            sourcedb.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
+            sourcedb.child(name.toUpperCase()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() == null)
                     {
-                        sourcedb.child(name).setValue(new NewSource(Category, Link));
+                        sourcedb.child(name.toUpperCase()).setValue(new NewSource(Category, Link));
                     }
                 }
 
@@ -126,10 +114,15 @@ public class AddFeedActivity extends AppCompatActivity {
         return result;
     }
 
-    public class ProcessInBackGround extends AsyncTask<String, Void, Void>
+    public class ProcessInBackGround extends AsyncTask<String, Void, String>
     {
         @Override
-        protected Void doInBackground(String... strings) {
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
             Exception exception = null;
             String link = "";
             try
@@ -217,7 +210,7 @@ public class AddFeedActivity extends AppCompatActivity {
                 exception = e;
                 validRSSLink = false;
             }
-            return null;
+            return "executed";
         }
     }
 

@@ -134,7 +134,7 @@ public class SourceListActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() == null)
                     {
-                        sourcedb.child(name).setValue(new NewSource(Category, Link));
+                        sourcedb.child(name.toUpperCase()).setValue(new NewSource(Category, Link));
                     }
                 }
 

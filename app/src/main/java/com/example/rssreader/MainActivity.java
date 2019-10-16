@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         getuserSources(new FirebaseCallback() {
             @Override
-            public void onCallback(List<String> usersourcenames, List<String> usersourcelinks) {
+            public void onCallback(List<String> usersourcenames, List<String> usersourcelinks) throws ExecutionException, InterruptedException {
                 MainActivity.usersourcenames = usersourcenames;
                 MainActivity.usersourcelinks = usersourcelinks;
 
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     for (int i=0;i<usersourcelinks.size();i++)
                     {
-                        new ProcessInBackGround().execute(usersourcelinks.get(i));
+                        String str_result = new ProcessInBackGround().execute(usersourcelinks.get(i)).get();
                     }
                 }
 
@@ -141,10 +142,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public class ProcessInBackGround extends AsyncTask<String, Void, Void>
+    public class ProcessInBackGround extends AsyncTask<String, Void, String>
     {
         @Override
-        protected Void doInBackground(String... strings) {
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
             Exception exception = null;
             String link="";
             try
@@ -226,13 +232,13 @@ public class MainActivity extends AppCompatActivity {
             {
                 exception = e;
             }
-            return null;
+            return "executed";
         }
     }
 
     public interface FirebaseCallback
     {
-        void onCallback(List<String> sourcenames, List<String> sourcelinks);
+        void onCallback(List<String> sourcenames, List<String> sourcelinks) throws ExecutionException, InterruptedException;
     }
 
 
@@ -259,7 +265,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                firebaseCallback.onCallback(usersourcenames, usersourcelinks);
+                try {
+                    firebaseCallback.onCallback(usersourcenames, usersourcelinks);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -287,6 +299,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
+                appsourcesLinks = new ArrayList<>();
+                appSourcesNames = new ArrayList<>();
+                appSourcesCategories = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
                     appsourcesLinks.add(ds.child("Link").getValue(String.class));
@@ -316,6 +331,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
+                favouriteLinks = new ArrayList<>();
+                favouriteTitles = new ArrayList<>();
                 if (dataSnapshot.getValue() != null)
                 {
                     for (DataSnapshot ds : dataSnapshot.getChildren())
@@ -324,7 +341,13 @@ public class MainActivity extends AppCompatActivity {
                         favouriteTitles.add(ds.child("title").getValue(String.class));
                     }
                 }
-                firebaseCallback.onCallback(favouriteLinks, favouriteTitles);
+                try {
+                    firebaseCallback.onCallback(favouriteLinks, favouriteTitles);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -334,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
 
         };
 
-        favourites.child(MainActivity.user).addListenerForSingleValueEvent(event);
+        favourites.child(MainActivity.user).addValueEventListener(event);
 
     }
 
