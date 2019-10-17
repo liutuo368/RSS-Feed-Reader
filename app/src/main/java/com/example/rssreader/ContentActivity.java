@@ -3,6 +3,8 @@ package com.example.rssreader;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,7 +30,9 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 
 public class ContentActivity extends AppCompatActivity{
@@ -36,6 +46,9 @@ public class ContentActivity extends AppCompatActivity{
     TextView newsDate;
     TextView newsContent;
 
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -45,6 +58,7 @@ public class ContentActivity extends AppCompatActivity{
         newsTitle = (TextView) findViewById(R.id.news_title);
         newsDate = (TextView) findViewById(R.id.news_date);
         newsContent = (TextView) findViewById(R.id.news_content);
+        initFacebook();
         Intent intent = getIntent();
         String action = intent.getAction();
         if(action.equals("newsInfo"))
@@ -61,18 +75,49 @@ public class ContentActivity extends AppCompatActivity{
     }
 
 
+    private void initFacebook() {
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+    }
+
     public void btnLikeOnClick(View v) {
         addUserfavourites(title, uri, description, date);
         Toast.makeText(this, "Added to favorite", Toast.LENGTH_LONG).show();
     }
 
     public void btnShareOnClick(View v) {
-        try {
-            TweetComposer.Builder builder = new TweetComposer.Builder(ContentActivity.this).url(new URL(uri));
-            builder.show();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,android.R.style.Theme_Holo_Light_Dialog);
+        builder.setTitle("Share to");
+        final String[] options = {"Facebook", "Twitter"};
+        builder.setItems(options, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, final int which)
+            {
+                switch (which) {
+                    case 0:
+                        if (ShareDialog.canShow(ShareLinkContent.class)) {
+                            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                    .setContentUrl(Uri.parse(uri))
+                                    .build();
+                            shareDialog.show(linkContent);
+                        }
+                        break;
+                    case 1:
+                        try {
+                            TweetComposer.Builder builder = new TweetComposer.Builder(ContentActivity.this).url(new URL(uri));
+                            builder.show();
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                        default:
+                            break;
+                }
+            }
+        });
+        builder.show();
     }
 
     public void btnGotoOnClick(View v) {
