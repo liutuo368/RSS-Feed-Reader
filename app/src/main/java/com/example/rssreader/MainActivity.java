@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Intent intent = getIntent();
         String action = intent.getAction();
+        // Get user login information
         if(action.equals("user")) {
             user = intent.getStringExtra("username");
         }

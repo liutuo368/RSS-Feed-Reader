@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,12 +65,14 @@ public class SourceListActivity extends AppCompatActivity {
 
     }
 
+    // Open Add Feed activity
     public void gotoAddFeed(View v) {
         Intent intent = new Intent(this, AddFeedActivity.class);
         startActivity(intent);
 
     }
 
+    // Get source list information from MainActivity
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.appSourcesNames.size(); i++) {
