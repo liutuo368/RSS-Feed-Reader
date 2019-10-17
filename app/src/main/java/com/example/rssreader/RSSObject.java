@@ -28,6 +28,7 @@ public class RSSObject
     public String sourceName;
     public String url;
     public String category;
+    public static boolean validRSSLink=false;
 
     public RSSObject(String sourceName, String url, String category)
     {
@@ -103,6 +104,59 @@ public class RSSObject
         });
     }
 
+    public String addRssSource(final String name, final String Link, final String Category) throws ExecutionException, InterruptedException {
+        String result = "";
+        validRSSLink = false;
+        String execResult = new ValidityCheck().execute(Link).get();
+
+        if (validRSSLink)
+        {
+            sourcedb.child(name.toUpperCase()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() == null)
+                    {
+                        sourcedb.child(name.toUpperCase()).setValue(new NewSource(Category, Link));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            result = "Valid Link, Added";
+        }
+        else
+        {
+            result = "Invalid Link";
+        }
+        return result;
+    }
+
+
+    public void manualRefresh()
+    {
+        MainActivity.titles = new ArrayList<>();
+        MainActivity.links = new ArrayList<>();
+        MainActivity.dates = new HashMap<>();
+        MainActivity.images = new HashMap<>();
+        MainActivity.description = new HashMap<>();
+        for (int i=0;i<MainActivity.usersourcelinks.size();i++)
+        {
+            try {
+                String str_result = new ProcessInBackGround().execute(MainActivity.usersourcelinks.get(i)).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 
 
     public InputStream getInputStream(URL url)
@@ -113,11 +167,108 @@ public class RSSObject
         }
         catch (IOException e)
         {
+            validRSSLink = false;
             return null;
         }
     }
 
+    public class ValidityCheck extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
 
+        @Override
+        protected String doInBackground(String... strings) {
+            Exception exception = null;
+            String title="";
+            try
+            {
+                URL Url = new URL(strings[0]);
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput(getInputStream(Url), "UTF_8");
+
+                boolean insideterm = false;
+
+                int eventType = xpp.getEventType();
+
+                while(eventType != XmlPullParser.END_DOCUMENT)
+                {
+                    if (eventType == XmlPullParser.START_TAG)
+                    {
+                        if (xpp.getName().equalsIgnoreCase("item"))
+                        {
+                            insideterm = true;
+                            validRSSLink = true;
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("title"))
+                        {
+                            if (insideterm)
+                            {
+                                title = xpp.nextText();
+//                                MainActivity.titles.add(title);
+                            }
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("link"))
+                        {
+                            if (insideterm)
+                            {
+
+//                                MainActivity.links.add(xpp.nextText());
+                            }
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("pubDate"))
+                        {
+                            if (insideterm)
+                            {
+//                                MainActivity.dates.put(title, xpp.nextText());
+                            }
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("image"))
+                        {
+                            if (insideterm)
+                            {
+//                                MainActivity.images.put(title, xpp.nextText());
+                            }
+                        }
+                        else if (xpp.getName().equalsIgnoreCase("description"))
+                        {
+                            if (insideterm)
+                            {
+//                                MainActivity.description.put(title, xpp.nextText());
+                            }
+                        }
+                    }
+                    else if ((eventType == XmlPullParser.END_TAG) && (xpp.getName().equalsIgnoreCase("item")))
+                    {
+                        insideterm = false;
+                    }
+
+                    eventType = xpp.next();
+                }
+
+
+
+            }
+            catch (MalformedURLException e)
+            {
+                exception = e;
+            }
+            catch (XmlPullParserException e)
+            {
+                exception = e;
+            }
+            catch (IOException e)
+            {
+                exception = e;
+            }
+            return "executed";
+        }
+    }
 
     public class ProcessInBackGround extends AsyncTask<String, Void, String>
     {
@@ -150,6 +301,7 @@ public class RSSObject
                         if (xpp.getName().equalsIgnoreCase("item"))
                         {
                             insideterm = true;
+                            validRSSLink = true;
                         }
                         else if (xpp.getName().equalsIgnoreCase("title"))
                         {
@@ -196,6 +348,8 @@ public class RSSObject
 
                     eventType = xpp.next();
                 }
+
+
 
             }
             catch (MalformedURLException e)

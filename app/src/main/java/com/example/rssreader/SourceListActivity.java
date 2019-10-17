@@ -121,130 +121,130 @@ public class SourceListActivity extends AppCompatActivity {
 
 
 
-    public String addRssSource(final String name, final String Link, final String Category)
-    {
-        String result = "";
-        validRSSLink = false;
-        new ProcessInBackGround().execute(Link);
-
-        if (validRSSLink)
-        {
-            sourcedb.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() == null)
-                    {
-                        sourcedb.child(name.toUpperCase()).setValue(new NewSource(Category, Link));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            result = "Valid Link, Added";
-        }
-        else
-        {
-            result = "Invalid Link";
-        }
-        return result;
-    }
-
-    public class ProcessInBackGround extends AsyncTask<String, Void, Void>
-    {
-        @Override
-        protected Void doInBackground(String... strings) {
-            Exception exception = null;
-            String title = "";
-            try
-            {
-
-                URL Url = new URL(strings[0]);
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(false);
-
-                XmlPullParser xpp = factory.newPullParser();
-                xpp.setInput(getInputStream(Url), "UTF_8");
-
-                boolean insideterm = false;
-
-                int eventType = xpp.getEventType();
-
-                while(eventType != XmlPullParser.END_DOCUMENT)
-                {
-                    if (eventType == XmlPullParser.START_TAG)
-                    {
-                        if (xpp.getName().equalsIgnoreCase("item"))
-                        {
-                            insideterm = true;
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("title"))
-                        {
-                            if (insideterm)
-                            {
-                                title = xpp.nextText();
-                                MainActivity.titles.add(title);
-                            }
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("link"))
-                        {
-                            if (insideterm)
-                            {
-                                MainActivity.links.add(xpp.nextText());
-                            }
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("pubDate"))
-                        {
-                            if (insideterm)
-                            {
-                                MainActivity.dates.put(title, xpp.nextText());
-                            }
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("image"))
-                        {
-                            if (insideterm)
-                            {
-                                MainActivity.images.put(title, xpp.nextText());
-                            }
-                        }
-                        else if (xpp.getName().equalsIgnoreCase("description"))
-                        {
-                            if (insideterm)
-                            {
-                                MainActivity.description.put(title, xpp.nextText());
-                            }
-                        }
-                    }
-                    else if ((eventType == XmlPullParser.END_TAG) && (xpp.getName().equalsIgnoreCase("item")))
-                    {
-                        insideterm = false;
-                    }
-
-                    eventType = xpp.next();
-                }
-
-                validRSSLink = true;
-
-            }
-            catch (MalformedURLException e)
-            {
-                exception = e;
-                validRSSLink = false;
-            }
-            catch (XmlPullParserException e)
-            {
-                exception = e;
-                validRSSLink = false;
-            }
-            catch (IOException e)
-            {
-                exception = e;
-                validRSSLink = false;
-            }
-            return null;
-        }
-    }
+//    public String addRssSource(final String name, final String Link, final String Category)
+//    {
+//        String result = "";
+//        validRSSLink = false;
+//        new ProcessInBackGround().execute(Link);
+//
+//        if (validRSSLink)
+//        {
+//            sourcedb.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.getValue() == null)
+//                    {
+//                        sourcedb.child(name.toUpperCase()).setValue(new NewSource(Category, Link));
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
+//
+//            result = "Valid Link, Added";
+//        }
+//        else
+//        {
+//            result = "Invalid Link";
+//        }
+//        return result;
+//    }
+//
+//    public class ProcessInBackGround extends AsyncTask<String, Void, Void>
+//    {
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//            Exception exception = null;
+//            String title = "";
+//            try
+//            {
+//
+//                URL Url = new URL(strings[0]);
+//                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+//                factory.setNamespaceAware(false);
+//
+//                XmlPullParser xpp = factory.newPullParser();
+//                xpp.setInput(getInputStream(Url), "UTF_8");
+//
+//                boolean insideterm = false;
+//
+//                int eventType = xpp.getEventType();
+//
+//                while(eventType != XmlPullParser.END_DOCUMENT)
+//                {
+//                    if (eventType == XmlPullParser.START_TAG)
+//                    {
+//                        if (xpp.getName().equalsIgnoreCase("item"))
+//                        {
+//                            insideterm = true;
+//                        }
+//                        else if (xpp.getName().equalsIgnoreCase("title"))
+//                        {
+//                            if (insideterm)
+//                            {
+//                                title = xpp.nextText();
+//                                MainActivity.titles.add(title);
+//                            }
+//                        }
+//                        else if (xpp.getName().equalsIgnoreCase("link"))
+//                        {
+//                            if (insideterm)
+//                            {
+//                                MainActivity.links.add(xpp.nextText());
+//                            }
+//                        }
+//                        else if (xpp.getName().equalsIgnoreCase("pubDate"))
+//                        {
+//                            if (insideterm)
+//                            {
+//                                MainActivity.dates.put(title, xpp.nextText());
+//                            }
+//                        }
+//                        else if (xpp.getName().equalsIgnoreCase("image"))
+//                        {
+//                            if (insideterm)
+//                            {
+//                                MainActivity.images.put(title, xpp.nextText());
+//                            }
+//                        }
+//                        else if (xpp.getName().equalsIgnoreCase("description"))
+//                        {
+//                            if (insideterm)
+//                            {
+//                                MainActivity.description.put(title, xpp.nextText());
+//                            }
+//                        }
+//                    }
+//                    else if ((eventType == XmlPullParser.END_TAG) && (xpp.getName().equalsIgnoreCase("item")))
+//                    {
+//                        insideterm = false;
+//                    }
+//
+//                    eventType = xpp.next();
+//                }
+//
+//                validRSSLink = true;
+//
+//            }
+//            catch (MalformedURLException e)
+//            {
+//                exception = e;
+//                validRSSLink = false;
+//            }
+//            catch (XmlPullParserException e)
+//            {
+//                exception = e;
+//                validRSSLink = false;
+//            }
+//            catch (IOException e)
+//            {
+//                exception = e;
+//                validRSSLink = false;
+//            }
+//            return null;
+//        }
+//    }
 }
