@@ -53,8 +53,9 @@ public class SourceListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_source_list);
         listView = (ListView) findViewById(R.id.source_list);
-        List<Map<String, Object>> list = getData();
-        listView.setAdapter(new SourceListAdapter(SourceListActivity.this, list));
+        List<Map<String, Object>> list = getData(); // The list of Source List in app library
+        listView.setAdapter(new SourceListAdapter(SourceListActivity.this, list)); // Set the adapter for ListView
+        // Add the source to user source list when the source was clicked
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

@@ -51,12 +51,13 @@ public class NewsFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         listView = (ListView) view.findViewById(R.id.newsList);
-        list = getData();
+        list = getData(); // The list of news to be shown on ListView
         adapter = new NewsListAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter); // Set up the adapter for ListView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Open ContentActivity and send information to it
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.setAction("newsInfo");
                 intent.putExtra("title", (String) list.get(position).get("title"));
@@ -86,6 +87,7 @@ public class NewsFragment extends Fragment{
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sort:
+                // Sort the item on News list
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),android.R.style.Theme_Holo_Light_Dialog);
                 builder.setTitle("Sort by");
                 final String[] options = {"Title", "Date"};
@@ -138,6 +140,7 @@ public class NewsFragment extends Fragment{
     }
 
 
+    // Get the data of News list from MainActivity
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.titles.size(); i++) {

@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     public static List<String> favouriteDescriptions = new ArrayList<>();
     public static List<String> favouriteDates = new ArrayList<>();
 
+
+    // Implement the function to switch between different fragments
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 

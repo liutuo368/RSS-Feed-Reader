@@ -41,10 +41,11 @@ public class SourcesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sources, container, false);
         listView = (ListView) view.findViewById(R.id.sourcesList);
         addButton = (Button) view.findViewById(R.id.btnAddSources);
-        final List<Map<String, Object>> list = getData();
+        final List<Map<String, Object>> list = getData(); // The list of user sources
         final SourceListAdapter adapter = new SourceListAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter); // Set the adapter for ListView
 
+        // Remove the source from user source list
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -77,6 +78,7 @@ public class SourcesFragment extends Fragment {
     }
 
 
+    // Get user source list information from MainActivity
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.usersourcenames.size(); i++) {
