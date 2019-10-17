@@ -93,47 +93,51 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        getuserSources(new FirebaseCallback() {
-            @Override
-            public void onCallback(List<String> usersourcenames, List<String> usersourcelinks) throws ExecutionException, InterruptedException {
-                MainActivity.usersourcenames = usersourcenames;
-                MainActivity.usersourcelinks = usersourcelinks;
-                titles = new ArrayList<>();
-                links = new ArrayList<>();
+//        getuserSources(new FirebaseCallback() {
+//            @Override
+//            public void onCallback(List<String> usersourceNames, List<String> usersourceLinks) throws ExecutionException, InterruptedException {
+//                usersourcenames = usersourceNames;
+//                usersourcelinks = usersourceLinks;
+//                titles = new ArrayList<>();
+//                links = new ArrayList<>();
+//
+//                dates = new HashMap<>();
+//                images = new HashMap<>();
+//                description = new HashMap<>();
+//                if (usersourcelinks.size()>0)
+//                {
+//
+//                    for (int i=0;i<usersourcelinks.size();i++)
+//                    {
+//                        String str_result = new ProcessInBackGround().execute(usersourcelinks.get(i)).get();
+//                    }
+//                }
+//
+//            }
+//        });
 
-                dates = new HashMap<>();
-                images = new HashMap<>();
-                description = new HashMap<>();
-                if (usersourcelinks.size()>0)
-                {
+        RSSObject rss = new RSSObject();
+        rss.getUserData();
+        rss.getUserFavourites();
+        rss.getSources();
+//        getUserFavourites(new FirebaseCallback() {
+//            @Override
+//            public void onCallback(List<String> favouriteLink, List<String> favouriteTitle) {
+//                favouriteLinks = favouriteLink;
+//                favouriteTitles = favouriteTitle;
+//
+//            }
+//        });
 
-                    for (int i=0;i<usersourcelinks.size();i++)
-                    {
-                        String str_result = new ProcessInBackGround().execute(usersourcelinks.get(i)).get();
-                    }
-                }
-
-            }
-        });
-
-        getUserFavourites(new FirebaseCallback() {
-            @Override
-            public void onCallback(List<String> favouriteLink, List<String> favouriteTitle) {
-                favouriteLinks = favouriteLink;
-                favouriteTitles = favouriteTitle;
-
-            }
-        });
-
-        getSources(new FirebaseCallback2() {
-            @Override
-            public void onCallback(List<String> rsssources, List<String> Categories, List<String> rssLinks)
-            {
-                MainActivity.appSourcesNames = rsssources;
-                MainActivity.appSourcesCategories = Categories;
-                MainActivity.appsourcesLinks = rssLinks;
-            }
-        });
+//        getSources(new FirebaseCallback2() {
+//            @Override
+//            public void onCallback(List<String> rsssources, List<String> Categories, List<String> rssLinks)
+//            {
+//                MainActivity.appSourcesNames = rsssources;
+//                MainActivity.appSourcesCategories = Categories;
+//                MainActivity.appsourcesLinks = rssLinks;
+//            }
+//        });
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeFragment()).commit();
     }
 
