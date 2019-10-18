@@ -62,7 +62,13 @@ public class RegisterActivity extends AppCompatActivity {
     DatabaseReference userdata = reader.child("UserData");
 
 
-
+    /**
+     * Author : Jihirshu Narayan
+     * @param firebaseCallback Callback function implementation of the FirebaseCallback interface
+     *
+     * Description : This function reads the firebase database and checks whether the username passed exists in the
+     *               database or not and if it does not, it creates a new user with the given user name and password.
+     */
 
     public void newUser(final FirebaseCallback firebaseCallback)
     {

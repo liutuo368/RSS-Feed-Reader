@@ -89,38 +89,35 @@ public class SourcesFragment extends Fragment {
         return list;
     }
 
+    // Creating the required database instances
+
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference sourcedb = reader.child("Sources");
     DatabaseReference userRss = reader.child("UserRSS");
 
+    /**
+     * Author : Jihirshu Narayan
+     * @param name Name of the RSS Feed Site
+     * @param link, the http link for the xml page of the rss feed
+     *
+     *
+     * Description : Removes a given source from the user's sources database.
+     */
 
     public void removeUserSource(String name, String link) throws ExecutionException, InterruptedException {
         removeFlag = false;
         String exec_result = new ProcessInBackground().execute(name, link).get();
     }
 
-    public void checkLinkValidity(final String name, final String link)
-    {
 
-
-        userRss.child(MainActivity.user).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                if (dataSnapshot.child(name).getValue().equals(link))
-                {
-                    removeFlag = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This class asynchronously works in the background and reads the firebase database and checks that
+     *               the source about to be removed from the user source is in fact present there and also checks that the
+     *               the given rss feed name and the link correctly match the information given in the database.
+     */
 
     public class ProcessInBackground extends AsyncTask<String, Void, String>
     {

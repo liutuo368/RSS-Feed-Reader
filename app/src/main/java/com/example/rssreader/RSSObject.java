@@ -1,3 +1,10 @@
+/**
+ * Author : Jihirshu Narayan
+ *
+ * Description : This class contains essential functions related to a given rss feed link.
+ */
+
+
 package com.example.rssreader;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -52,6 +59,13 @@ public class RSSObject
     }
 
 
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : The execution of this function populates the static variables titles, links, dates, images and descriptions with
+     *              relevant data depending on the sources present in the static variable usersourcelinks list
+     */
+
     public void getUserData()
     {
         getuserSources(new FirebaseCallback() {
@@ -61,7 +75,6 @@ public class RSSObject
                 MainActivity.usersourcelinks = usersourceLinks;
                 MainActivity.titles = new ArrayList<>();
                 MainActivity.links = new ArrayList<>();
-
                 MainActivity.dates = new HashMap<>();
                 MainActivity.images = new HashMap<>();
                 MainActivity.description = new HashMap<>();
@@ -78,6 +91,12 @@ public class RSSObject
         });
     }
 
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : The execution of this function populates the  static variables favouriteLinks and favouriteTitles from the corresponding
+     *               data present in the user's favourites database.
+     */
 
     public void getUserFavourites()
     {
@@ -91,6 +110,12 @@ public class RSSObject
         });
     }
 
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : The execution of this function gets the app's complete list of rss feed source names, links and categories.
+     */
+
     public void getSources()
     {
         getSources(new FirebaseCallback2() {
@@ -103,6 +128,13 @@ public class RSSObject
             }
         });
     }
+
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This function checks if a given RSS source feed already exists in the app's database or not and if not then creates a new node
+     *              with the relevant information.
+     */
 
     public String addRssSource(final String name, final String Link, final String Category) throws ExecutionException, InterruptedException {
         String result = "";
@@ -135,6 +167,13 @@ public class RSSObject
         return result;
     }
 
+
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This function refreshes the user's news feed
+     *
+     */
 
     public void manualRefresh()
     {
@@ -171,6 +210,14 @@ public class RSSObject
             return null;
         }
     }
+
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This class establishes a collection with the given rss source link, this class asynchronously works in the background and
+     *              downloads the xml data and checks whether the data is in a valid format or not.
+     *
+     */
 
     public class ValidityCheck extends AsyncTask<String, Void, String>
     {
@@ -269,6 +316,13 @@ public class RSSObject
             return "executed";
         }
     }
+
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : Given a rss feed link, this class asynchronously works in the background and establishes a connection with the link and downloads
+     *              the xml data and populates the titles, dates, images, description and links.
+     */
 
     public class ProcessInBackGround extends AsyncTask<String, Void, String>
     {
@@ -374,11 +428,23 @@ public class RSSObject
     }
 
 
+    // Creating the required database instances
+
+
+
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference userrss = reader.child("UserRSS");
     DatabaseReference sourcedb = reader.child("Sources");
     DatabaseReference favourites = reader.child("Favourites");
+
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This function is called whenever there is a change in the user's rss sources database. It updates the sourcename and sourcelink
+     *              arraylist for the user.
+     *
+     */
 
 
     public void getuserSources(final FirebaseCallback firebaseCallback)
@@ -423,6 +489,14 @@ public class RSSObject
     }
 
 
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This function is called whenever there is a change in the apps rss sources database. It updates the sourcename and sourcelink
+     *              arraylist for the entire app.
+     *
+     */
+
     public void getSources(final FirebaseCallback2 firebaseCallback2)
     {
         ValueEventListener event = new ValueEventListener() {
@@ -453,6 +527,14 @@ public class RSSObject
         sourcedb.addValueEventListener(event);
 
     }
+
+    /**
+     * Author : Jihirshu Narayan
+     *
+     * Description : This function is called whenever there is a change in the user's favourites database. It updates the links, dates,
+     *              description and titles arraylist for the user.
+     *
+     */
 
 
     public void getUserFavourites(final FirebaseCallback firebaseCallback)

@@ -26,20 +26,6 @@ import java.util.Map;
 public class SourceListActivity extends AppCompatActivity {
 
     private ListView listView;
-    public static boolean validRSSLink = false;
-
-
-    public class NewSource
-    {
-        public String Category;
-        public String Link;
-
-        public NewSource(String Category, String Link)
-        {
-            this.Category = Category;
-            this.Link = Link;
-        }
-    }
 
 
     @Override
@@ -78,23 +64,21 @@ public class SourceListActivity extends AppCompatActivity {
         return list;
     }
 
-    public InputStream getInputStream(URL url)
-    {
-        try
-        {
-            return url.openConnection().getInputStream();
-        }
-        catch (IOException e)
-        {
-            validRSSLink = false;
-            return null;
-        }
-    }
+    // Creating the required database instanes
 
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference sourcedb = reader.child("Sources");
     DatabaseReference userRss = reader.child("UserRSS");
+
+
+    /**
+     * Author : Jihirshu Narayan
+     * @param name Name of the RSS Feed Site
+     * @param Link, the http link for the xml page of the rss feed
+     *
+     * Description : This function adds RSS source selected from the app's database to the user's sources database.
+     */
 
     public void addUserSource(final String name, final String Link)
     {
@@ -114,132 +98,4 @@ public class SourceListActivity extends AppCompatActivity {
         });
     }
 
-
-
-//    public String addRssSource(final String name, final String Link, final String Category)
-//    {
-//        String result = "";
-//        validRSSLink = false;
-//        new ProcessInBackGround().execute(Link);
-//
-//        if (validRSSLink)
-//        {
-//            sourcedb.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    if (dataSnapshot.getValue() == null)
-//                    {
-//                        sourcedb.child(name.toUpperCase()).setValue(new NewSource(Category, Link));
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//
-//            result = "Valid Link, Added";
-//        }
-//        else
-//        {
-//            result = "Invalid Link";
-//        }
-//        return result;
-//    }
-//
-//    public class ProcessInBackGround extends AsyncTask<String, Void, Void>
-//    {
-//        @Override
-//        protected Void doInBackground(String... strings) {
-//            Exception exception = null;
-//            String title = "";
-//            try
-//            {
-//
-//                URL Url = new URL(strings[0]);
-//                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-//                factory.setNamespaceAware(false);
-//
-//                XmlPullParser xpp = factory.newPullParser();
-//                xpp.setInput(getInputStream(Url), "UTF_8");
-//
-//                boolean insideterm = false;
-//
-//                int eventType = xpp.getEventType();
-//
-//                while(eventType != XmlPullParser.END_DOCUMENT)
-//                {
-//                    if (eventType == XmlPullParser.START_TAG)
-//                    {
-//                        if (xpp.getName().equalsIgnoreCase("item"))
-//                        {
-//                            insideterm = true;
-//                        }
-//                        else if (xpp.getName().equalsIgnoreCase("title"))
-//                        {
-//                            if (insideterm)
-//                            {
-//                                title = xpp.nextText();
-//                                MainActivity.titles.add(title);
-//                            }
-//                        }
-//                        else if (xpp.getName().equalsIgnoreCase("link"))
-//                        {
-//                            if (insideterm)
-//                            {
-//                                MainActivity.links.add(xpp.nextText());
-//                            }
-//                        }
-//                        else if (xpp.getName().equalsIgnoreCase("pubDate"))
-//                        {
-//                            if (insideterm)
-//                            {
-//                                MainActivity.dates.put(title, xpp.nextText());
-//                            }
-//                        }
-//                        else if (xpp.getName().equalsIgnoreCase("image"))
-//                        {
-//                            if (insideterm)
-//                            {
-//                                MainActivity.images.put(title, xpp.nextText());
-//                            }
-//                        }
-//                        else if (xpp.getName().equalsIgnoreCase("description"))
-//                        {
-//                            if (insideterm)
-//                            {
-//                                MainActivity.description.put(title, xpp.nextText());
-//                            }
-//                        }
-//                    }
-//                    else if ((eventType == XmlPullParser.END_TAG) && (xpp.getName().equalsIgnoreCase("item")))
-//                    {
-//                        insideterm = false;
-//                    }
-//
-//                    eventType = xpp.next();
-//                }
-//
-//                validRSSLink = true;
-//
-//            }
-//            catch (MalformedURLException e)
-//            {
-//                exception = e;
-//                validRSSLink = false;
-//            }
-//            catch (XmlPullParserException e)
-//            {
-//                exception = e;
-//                validRSSLink = false;
-//            }
-//            catch (IOException e)
-//            {
-//                exception = e;
-//                validRSSLink = false;
-//            }
-//            return null;
-//        }
-//    }
 }

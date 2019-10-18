@@ -1,16 +1,12 @@
+/**
+ * Author : Jihirshu Narayan
+ *
+ * Description : Instances of this class are inserted in the firebase rss userdata databse as a single entity and the firebase api
+ *              handles the creation of child nodes.
+ */
+
+
 package com.example.rssreader;
-
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
