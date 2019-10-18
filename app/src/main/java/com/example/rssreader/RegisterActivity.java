@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
 
-            //Troy check forRegisterflag here.
+            //Troy check for Registerflag here.
 
             Toast.makeText(this, "Sucessfully signed up.", Toast.LENGTH_SHORT).show();
             finish();
