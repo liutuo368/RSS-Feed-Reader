@@ -30,12 +30,13 @@ public class FavoritesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         listView = (ListView) view.findViewById(R.id.favoriteList);
-        final List<Map<String, Object>> list = getData();
+        final List<Map<String, Object>> list = getData(); // The list of news to be shown on ListView
         final NewsListAdapter adapter = new NewsListAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter); // Set up the adapter for ListView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Open ContentActivity and send information to it
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.setAction("newsInfo");
                 intent.putExtra("title", MainActivity.favouriteTitles.get(position));
@@ -46,6 +47,7 @@ public class FavoritesFragment extends Fragment {
             }
         });
 
+        // Remove the news from favorite list
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -60,7 +62,7 @@ public class FavoritesFragment extends Fragment {
     }
 
 
-
+    // Get the data of favorite list from MainActivity
     public List <Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i = 0; i < MainActivity.favouriteLinks.size(); i++) {

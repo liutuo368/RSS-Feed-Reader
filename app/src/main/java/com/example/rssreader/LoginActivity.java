@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // Go to sign in activity
     public void signinOnClick(View v)
     {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

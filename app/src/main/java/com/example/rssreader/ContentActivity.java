@@ -53,6 +53,8 @@ public class ContentActivity extends AppCompatActivity{
         newsDate = (TextView) findViewById(R.id.news_date);
         newsContent = (TextView) findViewById(R.id.news_content);
         initFacebook();
+
+        // Handle the information from pre activity
         Intent intent = getIntent();
         String action = intent.getAction();
         if(action.equals("newsInfo"))
@@ -69,16 +71,19 @@ public class ContentActivity extends AppCompatActivity{
     }
 
 
+    // Initialise facebook component
     private void initFacebook() {
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
     }
 
+    // Add current news to favorite list
     public void btnLikeOnClick(View v) {
         addUserfavourites(title, uri, description, date);
         Toast.makeText(this, "Added to favorite", Toast.LENGTH_LONG).show();
     }
 
+    // Allow user to choose to share the news to Facebook or Twitter
     public void btnShareOnClick(View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this,android.R.style.Theme_Holo_Light_Dialog);
@@ -114,6 +119,7 @@ public class ContentActivity extends AppCompatActivity{
         builder.show();
     }
 
+    // Open default web browser and go to news page
     public void btnGotoOnClick(View v) {
         Uri uri = Uri.parse(this.uri);
         Intent intent = new Intent();

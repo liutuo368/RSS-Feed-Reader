@@ -32,7 +32,7 @@ import java.util.List;
 public class AddFeedActivity extends AppCompatActivity {
 
     public static boolean validRSSLink = false;
-    Spinner spinner;
+    Spinner spinner; // Category list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class AddFeedActivity extends AppCompatActivity {
         addListOnSpinner();
     }
 
+    // Set up Category list
     public void addListOnSpinner() {
         spinner = (Spinner)findViewById(R.id.category_choose);
         List<String> list = new ArrayList<>();
