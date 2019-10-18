@@ -93,7 +93,7 @@ public class FavoritesFragment extends Fragment {
         String charsToRemove = ".#$[]";
 
         final String filtered = CharMatcher.anyOf(charsToRemove).removeFrom(title);
-        favourites.child(MainActivity.user).child(title).removeValue();
+        favourites.child(MainActivity.user).child(filtered).removeValue();
     }
 
 }
