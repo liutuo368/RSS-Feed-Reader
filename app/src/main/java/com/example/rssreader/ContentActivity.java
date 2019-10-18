@@ -128,9 +128,22 @@ public class ContentActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    //Creating the required database instance
+
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference favourites = reader.child("Favourites");
+
+    /**
+     * Author : Jihirshu Narayan
+     * @param title Name of the RSS Feed Site
+     * @param link, the http link for the xml page of the rss feed
+     * @param description, Description text of the news
+     * @param date, Publishing date of the feed
+     *
+     * Description : This function takes the details of the favourite news and checks whether it already exists in the user's
+     *              firebase database or not. If it doesn't exist, then it creates a node under the user's node in the Favourites database.
+     */
 
     public void addUserfavourites(final String title, final String link, final String description, final String date)
     {
