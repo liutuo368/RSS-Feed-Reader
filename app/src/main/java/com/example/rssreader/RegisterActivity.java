@@ -32,22 +32,22 @@ public class RegisterActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.password);
         EditText conPass = (EditText) findViewById(R.id.conpass);
-        Username = username.toString();
-        Password = password.toString();
+        Username = username.getText().toString();
+        Password = password.getText().toString();
         if(password.getText().toString().equals(conPass.getText().toString())) {
             newUser(new FirebaseCallback() {
                 @Override
                 public void onCallback(Boolean flag) {
                     RegisterFlag = flag;
+
+                    if(RegisterFlag) {
+                        Toast.makeText(getApplicationContext(), "Successfully signed up.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Username already exists, please try again", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
-
-            if(RegisterFlag) {
-                Toast.makeText(this, "Successfully signed up.", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(this, "Username already exists, please try again", Toast.LENGTH_SHORT).show();
-            }
 
         } else {
             Toast.makeText(this, "Password don't match!", Toast.LENGTH_LONG).show();
@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void newUser(final FirebaseCallback firebaseCallback)
     {
 
-        userdata.child(Username).addListenerForSingleValueEvent(new ValueEventListener() {
+        ValueEventListener event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 boolean flag = false;
@@ -85,8 +85,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
 
+        userdata.child(Username).addListenerForSingleValueEvent(event);
     }
 
     public void createNewUser(String username, String password)
