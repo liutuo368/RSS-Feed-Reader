@@ -70,6 +70,15 @@ public class AddFeedActivity extends AppCompatActivity {
     DatabaseReference sourcedb = reader.child("Sources");
     DatabaseReference userRss = reader.child("UserRSS");
 
+    /**
+     * Author : Jihirshu Narayan
+     * @param name Name of the RSS Feed Site
+     * @param Link, the http link for the xml page of the rss feed
+     * @param Category, Category of the feed
+     *
+     * Description : This function directs the request to the RSSObject class function addRssSource
+     */
+
 
     public String addRssSource(final String name, final String Link, final String Category) throws ExecutionException, InterruptedException {
         RSSObject rss = new RSSObject();

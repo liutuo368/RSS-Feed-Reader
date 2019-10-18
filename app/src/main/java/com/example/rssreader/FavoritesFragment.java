@@ -72,10 +72,19 @@ public class FavoritesFragment extends Fragment {
         return list;
     }
 
+    // Creating the required database instance
 
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference favourites = reader.child("Favourites");
+
+    /**
+     * Author : Jihirshu Narayan
+     * @param title Name of the RSS Feed Site
+     *
+     * Description : This function takes the title (serves as primary key) of the favourite news and removes it from the user's
+     *              firebase node under the Favourites database.
+     */
 
     public void removeFavourites(String title)
     {

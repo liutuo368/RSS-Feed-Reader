@@ -21,6 +21,10 @@ public class LoginActivity extends AppCompatActivity {
     public String Username;
     public String Password;
     public String RetrievedPassword = "";
+
+
+    // Creating the required database instance
+
     DatabaseReference mRootref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference reader = mRootref.child("Reader");
     DatabaseReference userdata = reader.child("UserData");
@@ -40,6 +44,16 @@ public class LoginActivity extends AppCompatActivity {
         final EditText password = (EditText) findViewById(R.id.password);
         Username = username.getText().toString();
         Password = password.getText().toString();
+
+
+        /**
+         * Author : Jihirshu Narayan
+         * @param username, user name to be validated
+         * @param password, password of the user name to be validated
+         *
+         * Description : Below is a function call to a callback function to validate the username. We need to call this function in such a
+         *                  way because it runs on a separate thread from the main thread.
+         */
 
         validateUser(new FirebaseCallback() {
             @Override
@@ -65,6 +79,14 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    /**
+     * Author : Jihirshu Narayan
+     * @param firebaseCallback Callback function implementation of the FirebaseCallback interface
+     *
+     * Description : This function reads the firebase database and checks whether the username passed exists in the
+     *               database or not and if it does, it retrieves the password and stores it in the RetrievedPassword global variable
+     */
 
     public void validateUser(final FirebaseCallback firebaseCallback)
     {
