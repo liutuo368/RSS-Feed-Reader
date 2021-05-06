@@ -75,11 +75,11 @@ public class NewsFragment extends Fragment{
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),android.R.style.Theme_Holo_Light_Dialog);
                 builder.setTitle("Sort by");
                 final String[] options = {"Title", "Date"};
-                builder.setItems(options, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, final int which)
-                    {
+                        builder.setItems(options, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, final int which)
+                            {
                         Collections.sort(list, new Comparator<Map<String, Object>>() {
                             @Override
                             public int compare(Map<String, Object> stringObjectMap, Map<String, Object> t1) {
