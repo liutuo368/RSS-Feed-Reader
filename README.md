@@ -1,3 +1,3 @@
-# GP19S2
+# RSS Feed Reader
 
-Sample repository for the group project of COMP2100, 19S2.
+
